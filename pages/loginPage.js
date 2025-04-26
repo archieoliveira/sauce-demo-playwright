@@ -14,11 +14,11 @@ class LoginPage {
         .goto('https://www.saucedemo.com/');
     };
 
-    async login(username, password){
+    async login(username = '', password = ''){
         await this.usernameInput
-        .fill('standard_user')
+        .fill(username)
         await this.passwordInput
-        .fill('secret_sauce')
+        .fill(password)
         await this.loginButton
         .click()
         await this.page
