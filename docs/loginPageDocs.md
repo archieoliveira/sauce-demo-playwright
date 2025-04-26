@@ -1,6 +1,4 @@
-#### Cenário de teste: Login
-
-### Caso de teste 1 - CT1: Fazer o login com as credenciais corretas
+##### Cenário de teste: Login
 
 ## Background:
     # Given o usuário esteja na página inicial "https://www.saucedemo.com"
