@@ -1,10 +1,11 @@
 {
-    "name": "playwright-poc-auvo",
-    "version": "1.0.0",
-    "scripts": {
-      "test": "npx playwright test"
-    },
-    "devDependencies": {
-      "@playwright/test": "^1.43.1"
-    }
+  "name": "sauce-demo-playwright",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "npx playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
   }
+}
