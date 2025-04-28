@@ -1,4 +1,6 @@
-class CartPage { // definindo a classe
+import { expect } from '@playwright/test';
+
+export class CartPage { // definindo a classe
     constructor(page) { // instanciando os objetos que iremos usar na página e associando seletores da página
         
         this.page = page;
@@ -19,21 +21,29 @@ class CartPage { // definindo a classe
 
         this.continueShoppingButton = page
         .locator('#continue-shopping'); 
+
+        this.cartItems = page
+        .locator('.cart_item');
+ 
     };
 
     async goToCheckout() { 
         if (await this.isCartEmpty()) {
             throw new Error('❌ Não é possível avançar para o checkout com o carrinho vazio!');
-        }
-        await this.checkoutButton
-        .click();
-        await this.page.waitForURL('https://www.saucedemo.com/checkout-step-one.html');
-    }
+        };
+
+        await this.checkoutButton.click();
+    };
 
     async isCartEmpty() {
-        return await this.cartItems.count() === 0; // Retorna true se não houver itens
-    }
+        return await this.cartItems.count() === 0; // retorna true se não houver itens
+    };
+
+    async clickContinueShopping() {
+        await this.continueShoppingButton.click()
+    };
+
+    async clickRemoveProduct() {
+        await this.removeButton.click()
+    }; 
 };
-
-
-module.exports = { CartPage }; // exportando a classe CartPage, tornando possível importar em outro arquivo do projeto

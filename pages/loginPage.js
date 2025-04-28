@@ -32,5 +32,8 @@ export class LoginPage {
     async getErrorMessage() {
       return this.errorMessage;
     }
-  }
-  
+
+    async validatePage(urlExpected = '') { // 
+        const urlToWaitFor = urlExpected || 'https://www.saucedemo.com/inventory.html'
+  };
+}
