@@ -34,6 +34,10 @@ test.describe('Checkout', () => {
       await expect(page.locator('.inventory_item_name')).toHaveText('Sauce Labs Backpack'); // confere se o produto do checkout está certo
       await checkoutPage.finishFlow(); // finaliza o checkout
     });
+
+    await test.step('Verificação sucesso', async () => {
+      await loginPage.validatePage('https://www.saucedemo.com/checkout-complete.html')
+    })
   });
 
   test('Tentar avançar com formulário incompleto', async ({ page }) => {
