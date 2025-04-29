@@ -43,7 +43,6 @@ test.describe('Checkout', () => {
     ];
 
     for (let i = 0; i < formFields.length; i++) {
-      // Preenche todos os campos, exceto o atual
       for (let j = 0; j < formFields.length; j++) {
         if (i === j) {
           await page.fill(formFields[j].field, '');
@@ -52,13 +51,15 @@ test.describe('Checkout', () => {
         }
       }
 
+      await test.step('Tentar prosseguir com o submit', async () => {
       await checkoutPage.submitForm(false);
+    })
 
-      const errorMessage = await page.locator('[data-test="error"]'); // Seletor correto para erro no Sauce Demo
-      await expect(errorMessage).toBeVisible();
-      await expect(errorMessage).toHaveText(`Error: ${formFields[i].name} is required`);
-
-      // Opcional: Resetar o formulário ou recarregar página se necessário para o próximo ciclo
-    }
+      await test.step('Retornar mensagens de erro', async () => {
+        const errorMessage = await page.locator('[data-test="error"]'); 
+        await expect(errorMessage).toBeVisible();
+        await expect(errorMessage).toHaveText(`Error: ${formFields[i].name} is required`);
+      });
+    };
   });
 });

@@ -15,6 +15,8 @@ test.describe('Login', () => {
       // utilizando o método fillUsername feito no arquivo da classe e passando o argumento 'standard_user' para preencher o respectivo campo Username
     });
 
+    // fiz esse processo mais "quebrado" nesse primeiro cenário de teste para mostrar como fazer assim
+
     await test.step('Preencher a senha', async () => {
       await loginPage.fillPassword('secret_sauce');
     });
@@ -31,7 +33,7 @@ test.describe('Login', () => {
   test('Tentar login com username vazio', async ({ page }) => { // outro caso de teste para verificar se o sistema está apresentando o erro esperado quando tentar fazer
     // o login com o username vazio
     await test.step('Deixar o campo de usuário vazio', async () => {
-      await loginPage.fillUsername('');
+      await loginPage.fillUsername(''); // passei o método fillUsername com string vazia de argumento, ou seja, deixando em branco
     });
 
     await test.step('Preencher a senha', async () => {
@@ -44,7 +46,7 @@ test.describe('Login', () => {
 
     await test.step('Validar mensagem de erro', async () => {
       const errorMessage = await loginPage.getErrorMessage();
-      await expect(errorMessage).toContainText('Username is required');
+      await expect(errorMessage).toContainText('Username is required'); // a variável errorMessage precisa ter o texto da string
     });
   });
 
@@ -54,7 +56,7 @@ test.describe('Login', () => {
     });
 
     await test.step('Preencher uma senha errada', async () => {
-      await loginPage.fillPassword('senha_errada');
+      await loginPage.fillPassword('senha_errada'); // passando como argumento uma senha inválida
     });
 
     await test.step('Clicar no botão de login', async () => {
@@ -69,7 +71,7 @@ test.describe('Login', () => {
 
   test('Tentar login com usuário bloqueado', async ({ page }) => {
     await test.step('Preencher o usuário bloqueado', async () => {
-      await loginPage.fillUsername('locked_out_user');
+      await loginPage.fillUsername('locked_out_user'); // passando como argumento um usuário inválido
     });
 
     await test.step('Preencher a senha correta', async () => {

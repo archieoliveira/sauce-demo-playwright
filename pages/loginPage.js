@@ -66,8 +66,6 @@
         await this.fillUsername('standard_user');
         await this.fillPassword('secret_sauce');
         await this.clickLogin();
-        const isEmpty = await cartPage.isCartEmpty();
-        expect(this.page).toBe(true);
         await expect(this.page).toHaveURL('https://www.saucedemo.com/inventory.html');
     };
 };

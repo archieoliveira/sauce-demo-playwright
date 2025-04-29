@@ -1,3 +1,5 @@
+import { expect } from '@playwright/test';
+
 export class ProductsPage {
     constructor(page) {
         
@@ -14,6 +16,9 @@ export class ProductsPage {
         
         this.addToCartButton = page
         .locator('#add-to-cart-sauce-labs-backpack');
+
+        this.removeButtonProduct = page
+        .locator('button', { hasText: 'Remove' });
         
         this.cartIcon = page
         .locator('.shopping_cart_link');
@@ -22,17 +27,8 @@ export class ProductsPage {
         .locator('.shopping_cart_badge')
 
         this.orderBySelector = page
-        .locator('.product_sort_container option')
-
-        this.descAlphabeticalOrder = page
-        .locator('.product_sort_container option', {hasText: 'Name (Z to A)'});;
-
-        this.priceLowToHighOrder = page
-        .locator('.product_sort_container option', {hasText: 'Price (low to high)'});
-
-        this.priceHighToLowOrder = page
-        .locator('.product_sort_container option', {haxText: 'Price (low to high)'});
-    };
+        .locator('.product_sort_container')
+    }
 
     async selectProduct(){
         await this.productTitle.first().click();
@@ -42,9 +38,13 @@ export class ProductsPage {
         await this.addToCartButton.first().click();
     };
 
+    async removeButtonProductsClick() {
+        await this.removeButtonProduct.click();
+      }
+
     async getCartItemCount() {
-        const badgeExists = await this.cartIconBadge.count() > 0; // Verifica se o elemento existe
-        return badgeExists ? await this.cartIconBadge.innerText() : '0'; // Retorna 0 se não houver itens
+        const badgeExists = await this.cartIconBadge.count() > 0; // verifica se o elemento existe
+        return badgeExists ? await this.cartIconBadge.innerText() : '0'; // retorna 0 se não houver itens (seria igual um 'false')
     };
 
     async goToCart () {
@@ -61,33 +61,37 @@ export class ProductsPage {
         await this.page.waitForURL('https://www.saucedemo.com/inventory.html');
     };
 
+    async isAscAlphabetical() {
+        await this.orderBySelector.selectOption('az'); 
+        await this.page.waitForLoadState('networkidle');
+        const productNames = await this.page.locator('.inventory_item_name').allTextContents();
+        const sortedNames = [...productNames].sort((a, b) => a.localeCompare(b));
+        expect(productNames, 'Produtos não estão ordenados de A para Z').toEqual(sortedNames);
+    };
+    
     async isDescAlphabetical() {
-        await this.orderBySelector.click();
-        await this.descAlphabeticalOrder.click();
+        await this.orderBySelector.selectOption('za'); 
         await this.page.waitForLoadState('networkidle');
         const productNames = await this.page.locator('.inventory_item_name').allTextContents();
         const sortedNames = [...productNames].sort((a, b) => b.localeCompare(a));
-        expect(productNames, 'Produtos devem estar ordenados de Z para A').toEqual(sortedNames);
-    };
-
+        expect(productNames, 'Produtos não estão ordenados de Z para A').toEqual(sortedNames);
+    }
+    
     async isPriceHighToLow() {
-        await this.orderBySelector.click();
-        await this.priceHighToLowOrder.click();
+        await this.orderBySelector.selectOption('hilo'); 
         await this.page.waitForLoadState('networkidle');
-        const productPricesText = await this.page.locator('.inventory_item_price'). allTextContents();
+        const productPricesText = await this.page.locator('.inventory_item_price').allTextContents();
         const productPrices = productPricesText.map(price => parseFloat(price.replace('$', '')));
         const sortedPrices = [...productPrices].sort((a, b) => b - a);
-        expect(productPrices, 'Preços devem estar ordenados do maior para o menor').toEqual(sortedPrices);
+        expect(productPrices, 'Preços não estão ordenados do maior para o menor').toEqual(sortedPrices);
     };
-
+    
     async isPriceLowToHigh() {
-        await this.orderBySelector.click();
-        await this.priceLowToHighOrder.click();  // <- atenção: clica no correto para low to high
+        await this.orderBySelector.selectOption('lohi'); 
         await this.page.waitForLoadState('networkidle');
         const productPricesText = await this.page.locator('.inventory_item_price').allTextContents();
         const productPrices = productPricesText.map(price => parseFloat(price.replace('$', '')));
         const sortedPrices = [...productPrices].sort((a, b) => a - b);
-        expect(productPrices, 'Preços devem estar ordenados do menor para o maior').toEqual(sortedPrices);
+        expect(productPrices, 'Preços não estão ordenados do menor para o maior').toEqual(sortedPrices);
     };
-};
-
+};    
