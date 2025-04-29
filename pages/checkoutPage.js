@@ -1,4 +1,4 @@
-class CheckOutPage { // definindo a classe
+export class CheckOutPage { // definindo a classe e exportando
     
     constructor(page) {  // instanciando os objetos que iremos usar na página e associando seletores da página
         
@@ -21,9 +21,12 @@ class CheckOutPage { // definindo a classe
 
         this.errorMessage = page
         .locator('.error-message-container.error')
+
+        this.finishButton = page
+        .locator('#finish')
     };
 
-    async submitForm(firstName = '', lastName = '', zipOrPostalCode = '') { // passando os argumentos que iremos preencher nos campos do formulário
+    async fillForm(firstName = '', lastName = '', zipOrPostalCode = '') { // passando os argumentos que iremos preencher nos campos do formulário
         await this.firstNameInput
         .fill(firstName);
         
@@ -32,12 +35,13 @@ class CheckOutPage { // definindo a classe
         
         await this.zipOrPostalCodeInput
         .fill(zipOrPostalCode);
-        
-        await this.continueButton
-        .click();
-        
-        await this.page
-        .waitForURL('https://www.saucedemo.com/checkout-step-two.html')
+    }
+
+    async submitForm(expectNavigation = true) {
+        await this.page.locator('#continue').click();
+        if (expectNavigation) {
+            await this.page.waitForURL('https://www.saucedemo.com/checkout-step-two.html');
+        }
     }
 
     async getErrorMessage() {
@@ -51,7 +55,10 @@ class CheckOutPage { // definindo a classe
         await this.page
         .waitForURL('https://www.saucedemo.com/cart.html');
     }
-};
+
+    async finishFlow() {
+        await this.finishButton.click()
+    }
+}
 
 
-module.exports = { CheckOutPage }; // exportando a classe CheckOutPage, tornando possível importar em outro arquivo do projeto

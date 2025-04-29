@@ -34,11 +34,6 @@ export class ProductsPage {
         .locator('.product_sort_container option', {haxText: 'Price (low to high)'});
     };
 
-    async goto(){
-        await this.page
-        .goto('https://www.saucedemo.com/inventory.html');
-    };
-
     async selectProduct(){
         await this.productTitle.first().click();
     };

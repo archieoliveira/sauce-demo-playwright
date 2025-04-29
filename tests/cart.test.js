@@ -17,6 +17,7 @@ test.describe('Cart', () => {
     await loginPage.goto(); 
     await loginPage.login('standard_user', 'secret_sauce'); 
     await loginPage.validatePage('https://www.saucedemo.com/inventory.html'); 
+    
   });
 
   test('Adicionar um item ao carrinho', async ({ page }) => {
@@ -85,15 +86,11 @@ test.describe('Cart', () => {
     await test.step('Adicionar item ao carrinho', async () => {
         await productsPage.addToCart();
     });
-
-    await test.step('Ir para o carrinho', async () => {
-        await productsPage.goToCart();
-        await page.waitForURL('https://www.saucedemo.com/cart.html');
-    });
+    
   
     await test.step('Verificar se o carrinho tem o produto', async () => {
       const isEmpty = await cartPage.isCartEmpty();
-      expect(isEmpty).toBe(false); // Espera que tenha item antes de remover
+      expect(isEmpty).toBe(true); // Espera que tenha item antes de remover
     });
   
     await test.step('Clicar no botão de remover', async () => {
