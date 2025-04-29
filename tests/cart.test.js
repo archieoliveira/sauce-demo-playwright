@@ -27,39 +27,39 @@ test.describe('Cart', () => {
     });
 
     await test.step('Adicionar item ao carrinho', async () => {
-      await productsPage.addToCart();
+      await productsPage.addToCart(); // adiciona o produto ao carrinho
     });
     
     await test.step('Ir para o carrinho', async () => {
         await productsPage.goToCart();
-        await page.waitForURL('https://www.saucedemo.com/cart.html');
+        await page.waitForURL('https://www.saucedemo.com/cart.html'); // valida se foi para a página do carrinho
     });
 
     await test.step('Verificar se o item foi adicionado ao carrinho', async () => {
-        await expect(page.url()).toBe('https://www.saucedemo.com/cart.html');
-        await expect(page.locator('.inventory_item_name')).toHaveText('Sauce Labs Backpack');
+        await expect(page.url()).toBe('https://www.saucedemo.com/cart.html'); // espera carregar a página do carrinho pra continuar
+        await expect(page.locator('.inventory_item_name')).toHaveText('Sauce Labs Backpack'); // valida se o nome do produto é o argumento passado no toHaveText
     });
 
     await test.step('Ir para o checkout', async () => {
-      await cartPage.goToCheckout();
+      await cartPage.goToCheckout(); // tenta ir para o checkout
     });
     await test.step('Verificar URL do checkout', async () => {
-      expect(page.url()).toBe('https://www.saucedemo.com/checkout-step-one.html');
+      expect(page.url()).toBe('https://www.saucedemo.com/checkout-step-one.html'); // estando tudo certo, deve ser possível chegar até o checkout, mas para ai, por conta do escopo do teste
     });
   });
 
   test('Tentar ir para o checkout com o carrinho vazio', async ({ page }) => {
     await test.step('Verificar se o carrinho está vazio', async () => {
       const isEmpty = await cartPage.isCartEmpty();
-      expect(isEmpty).toBe(true);
+      expect(isEmpty).toBe(true); // espera que o carrinho esteja 
     });
 
     await test.step('Tentar ir para o checkout', async () => {
       try {
-        await cartPage.goToCheckout();
-        throw new Error('Deveria ter lançado erro ao tentar ir com o carrinho vazio!');
-      } catch (error) {
-        expect(error.message).toBe('❌ Não é possível avançar para o checkout com o carrinho vazio!');
+        await cartPage.goToCheckout(); // tenta ir para o checkout com o carrinho vazio
+        throw new Error('Deveria ter lançado erro ao tentar ir com o carrinho vazio!'); // exibe um erro falando que não pode avançar sem produto no carrinho
+      } catch (error) { // valida o erro
+        expect(error.message).toBe('❌ Não é possível avançar para o checkout com o carrinho vazio!'); // valida a mensagem correta
       }
     });
   });
@@ -68,38 +68,37 @@ test.describe('Cart', () => {
 
     await test.step('Ir para o carrinho', async () => {
         await productsPage.goToCart();
-        await page.waitForURL('https://www.saucedemo.com/cart.html');
+        await page.waitForURL('https://www.saucedemo.com/cart.html'); // já vai para a página do carrinho
     });
 
     await test.step('Clicar no botão', async () => {
-        await page.waitForSelector('.btn.btn_secondary.back.btn_medium'); // Esperar o botão aparecer
-        await cartPage.clickContinueShopping();
+        await page.waitForSelector('.btn.btn_secondary.back.btn_medium'); // esperar o botão aparecer
+        await cartPage.clickContinueShopping(); // clica no botão para continuar comprando, ou seja, deve voltar à pagina de produtos
     });
 
     await test.step('Validar se voltou para a tela de produtos', async () => {
-        await page.waitForURL('**/inventory.html');
-        await expect(page).toHaveURL(/.*inventory\.html/);
+        await page.waitForURL('**/inventory.html'); // espera voltar para continuar o teste
+        await expect(page).toHaveURL(/.*inventory\.html/); // valida que voltou para a tela de produtos
     });
   });
 
   test('Testar botão de remover produto', async ({ page }) => {
     await test.step('Adicionar item ao carrinho', async () => {
-        await productsPage.addToCart();
+        await productsPage.addToCart(); // adiciona o produto ao carrinho
     });
     
-  
     await test.step('Verificar se o carrinho tem o produto', async () => {
       const isEmpty = await cartPage.isCartEmpty();
-      expect(isEmpty).toBe(true); // Espera que tenha item antes de remover
+      expect(isEmpty).toBe(true); // espera que tenha item antes de remover
     });
   
     await test.step('Clicar no botão de remover', async () => {
-      await cartPage.clickRemoveProduct();
+      await cartPage.clickRemoveProduct(); // clica em remover o produto
     });
   
     await test.step('Verificar se removeu o produto', async () => {
       const isEmpty = await cartPage.isCartEmpty();
-      expect(isEmpty).toBe(true); // Depois de remover, carrinho deve estar vazio
+      expect(isEmpty).toBe(true); // depois de remover, carrinho deve estar vazio
     });
   });  
 });
