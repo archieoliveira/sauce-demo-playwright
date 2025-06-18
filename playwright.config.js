@@ -15,4 +15,4 @@ export default defineConfig({
   testMatch: '**/*.test.js',
   retries: 0,
   timeout: 30000,
-});
+});lc
