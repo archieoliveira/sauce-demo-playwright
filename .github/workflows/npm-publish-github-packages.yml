@@ -21,7 +21,7 @@ jobs:
 
       - name: Run tests in Docker
         run: docker run --rm my-playwright-app
-        
+
       - name: Upload test results (HTML report)
         if: always()
         uses: actions/upload-artifact@v4

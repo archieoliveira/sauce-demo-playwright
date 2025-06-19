@@ -1,14 +1,12 @@
-FROM mcr.microsoft.com/playwright:v1.44.1-jammy
+FROM mcr.microsoft.com/playwright:v1.52.0-jammy
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-
 RUN npm ci
 
 COPY . .
 
-# Fix permissions after all files are in place
 RUN chmod +x node_modules/.bin/playwright
 
 CMD ["npx", "playwright", "test"]
