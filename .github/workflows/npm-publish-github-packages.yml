@@ -17,14 +17,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t sauce-playwright .
+        run: docker build -t my-playwright-app .
 
       - name: Run tests in Docker
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}/playwright-report:/app/playwright-report \
-            sauce-playwright
-
+        run: docker run --rm my-playwright-app
+        
       - name: Upload test results (HTML report)
         if: always()
         uses: actions/upload-artifact@v4
