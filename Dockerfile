@@ -6,8 +6,10 @@ WORKDIR /app
 # Copia arquivos de dependências
 COPY package.json package-lock.json ./
 
-# Instala dependências
 RUN npm ci
+
+# Ensure playwright binary is executable (fixes Windows permission issues)
+RUN chmod +x node_modules/.bin/playwright
 
 # Copia o restante do projeto
 COPY . .
