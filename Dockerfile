@@ -12,8 +12,5 @@ RUN npm ci
 # Copia o restante do projeto
 COPY . .
 
-# Adiciona xvfb para criar um servidor gráfico virtual
-RUN apt-get update && apt-get install -y xvfb
-
 # Executa testes no modo headed usando xvfb
-CMD ["xvfb-run", "--auto-servernum", "--", "npx", "playwright", "test", "--headed"]
+CMD ["npx", "playwright", "test"]
