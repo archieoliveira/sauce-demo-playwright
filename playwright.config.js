@@ -10,6 +10,9 @@ export default defineConfig({
     viewport: { width: 1280, height: 720 },
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    launchOptions: {
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  },
   },
   testDir: './tests',
   testMatch: '**/*.test.js',
